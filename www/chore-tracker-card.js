@@ -27,7 +27,7 @@ class ChoreTrackerCard extends HTMLElement {
     if (!entity) {
       this.shadowRoot.innerHTML = `
         <ha-card>
-          <div class="card-content">Entity not found: ${this._config.entity}</div>
+          <div class="card-content">Entity not found: ${this.escapeHtml(this._config.entity)}</div>
         </ha-card>
       `;
       return;
@@ -320,13 +320,24 @@ class ChoreTrackerCard extends HTMLElement {
   renderChore(chore) {
     const completed = chore.completed || false;
     const name = chore.chore_name || chore.chore_id || 'Unnamed Chore';
+    const choreId = chore.chore_id || '';
+    
+    // Escape HTML to prevent XSS
+    const escapedName = this.escapeHtml(name);
+    const escapedId = this.escapeHtml(choreId);
     
     return `
-      <div class="chore-item ${completed ? 'completed' : ''}" data-chore-id="${chore.chore_id}">
+      <div class="chore-item ${completed ? 'completed' : ''}" data-chore-id="${escapedId}">
         <div class="checkbox ${completed ? 'checked' : ''}"></div>
-        <div class="chore-name">${name}</div>
+        <div class="chore-name">${escapedName}</div>
       </div>
     `;
+  }
+
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   renderMotivation(percentage) {

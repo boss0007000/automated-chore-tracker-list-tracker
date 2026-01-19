@@ -182,21 +182,27 @@
             callService: function(domain, service, data) {
                 console.log(`Service called: ${domain}.${service}`, data);
                 
-                // Toggle chore completion in demo
-                const entity = this.states['sensor.daily_chores'];
-                if (entity) {
-                    const chore = entity.attributes.chores.find(c => c.chore_id === data.chore_id);
-                    if (chore) {
-                        chore.completed = !chore.completed;
-                        entity.attributes.completed_count = entity.attributes.chores.filter(c => c.completed).length;
-                        entity.state = entity.attributes.completed_count.toString();
-                        
-                        // Refresh all cards
-                        document.querySelectorAll('chore-tracker-card').forEach(card => {
-                            card.render();
-                        });
+                // Find which entity contains this chore
+                let targetEntity = null;
+                for (const entityId in this.states) {
+                    const entity = this.states[entityId];
+                    if (entity.attributes.chores) {
+                        const chore = entity.attributes.chores.find(c => c.chore_id === data.chore_id);
+                        if (chore) {
+                            targetEntity = entity;
+                            // Toggle chore completion
+                            chore.completed = !chore.completed;
+                            entity.attributes.completed_count = entity.attributes.chores.filter(c => c.completed).length;
+                            entity.state = entity.attributes.completed_count.toString();
+                            break;
+                        }
                     }
                 }
+                
+                // Refresh all cards
+                document.querySelectorAll('chore-tracker-card').forEach(card => {
+                    card.render();
+                });
             }
         };
         

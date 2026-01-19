@@ -186,8 +186,8 @@ class ChoreListManager:
 
     async def _notify_listeners(self):
         """Notify all sensors to update."""
-        # This will be called by sensors when they need updates
-        pass
+        # Force update of all entities
+        self.hass.bus.async_fire(f"{DOMAIN}_update")
 
     def get_chores_by_interval(self, interval: str) -> list:
         """Get all chores for a specific interval."""
@@ -202,7 +202,15 @@ class ChoreListManager:
         if not last_completed:
             return dt_util.now()
         
-        last_completed_dt = dt_util.parse_datetime(last_completed)
+        try:
+            last_completed_dt = dt_util.parse_datetime(last_completed)
+            if not last_completed_dt:
+                # Invalid datetime string, return now as safe default
+                return dt_util.now()
+        except (ValueError, TypeError):
+            # Malformed datetime string, return now as safe default
+            return dt_util.now()
+        
         interval = chore.get(ATTR_REPEAT_INTERVAL)
         
         if interval == REPEAT_DAILY:
