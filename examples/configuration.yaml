@@ -1,0 +1,241 @@
+# Example configuration.yaml entries for Chore Tracker
+
+# Example Lovelace dashboard with chore tracker cards
+# Add this to your ui-lovelace.yaml or through the UI editor
+
+views:
+  - title: Chore Tracker
+    path: chores
+    icon: mdi:format-list-checks
+    cards:
+      - type: custom:chore-tracker-card
+        entity: sensor.daily_chores
+        title: Daily Mission Objectives
+      
+      - type: custom:chore-tracker-card
+        entity: sensor.weekly_chores
+        title: Weekly Maintenance Protocol
+      
+      - type: custom:chore-tracker-card
+        entity: sensor.bi_weekly_chores
+        title: Bi-Weekly Systems Check
+
+# Example automations to setup chores
+automation:
+  # Setup Daily Chores
+  - alias: "Initialize Daily Chores"
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: time
+        at: "00:00:00"  # Reset at midnight
+    action:
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "make_bed"
+          chore_name: "Make Bed"
+          repeat_interval: "daily"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "wash_dishes"
+          chore_name: "Wash Dishes"
+          repeat_interval: "daily"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "take_out_trash"
+          chore_name: "Take Out Trash"
+          repeat_interval: "daily"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "wipe_counters"
+          chore_name: "Wipe Kitchen Counters"
+          repeat_interval: "daily"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "feed_pets"
+          chore_name: "Feed Pets"
+          repeat_interval: "daily"
+
+  # Setup Weekly Chores
+  - alias: "Initialize Weekly Chores"
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: time
+        at: "00:00:00"
+    condition:
+      - condition: time
+        weekday:
+          - mon
+    action:
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "clean_bathroom"
+          chore_name: "Clean Bathroom"
+          repeat_interval: "weekly"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "vacuum_house"
+          chore_name: "Vacuum Entire House"
+          repeat_interval: "weekly"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "mop_floors"
+          chore_name: "Mop Floors"
+          repeat_interval: "weekly"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "change_sheets"
+          chore_name: "Change Bed Sheets"
+          repeat_interval: "weekly"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "grocery_shopping"
+          chore_name: "Grocery Shopping"
+          repeat_interval: "weekly"
+
+  # Setup Bi-Weekly Chores
+  - alias: "Initialize Bi-Weekly Chores"
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "deep_clean_kitchen"
+          chore_name: "Deep Clean Kitchen"
+          repeat_interval: "bi_weekly"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "clean_windows"
+          chore_name: "Clean Windows"
+          repeat_interval: "bi_weekly"
+      
+      - service: chore_tracker.add_chore
+        data:
+          chore_id: "organize_closet"
+          chore_name: "Organize Closet"
+          repeat_interval: "bi_weekly"
+
+  # Example: Auto-complete chore when vacuum finishes
+  - alias: "Auto Complete Vacuuming Chore"
+    trigger:
+      - platform: state
+        entity_id: vacuum.robot_vacuum
+        to: "docked"
+    action:
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "vacuum_house"
+
+  # Example: Auto-complete dishwasher chore
+  - alias: "Auto Complete Dishwasher Chore"
+    trigger:
+      - platform: state
+        entity_id: sensor.dishwasher
+        to: "clean"
+    action:
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "wash_dishes"
+
+  # Celebration when all daily chores are done
+  - alias: "Daily Chores Completed Celebration"
+    trigger:
+      - platform: state
+        entity_id: sensor.daily_chores
+    condition:
+      - condition: template
+        value_template: >
+          {{ state_attr('sensor.daily_chores', 'completed_count') == 
+             state_attr('sensor.daily_chores', 'total_count') and
+             state_attr('sensor.daily_chores', 'total_count') > 0 }}
+    action:
+      - service: notify.persistent_notification
+        data:
+          title: "🎉 Daily Mission Complete!"
+          message: "All daily chores completed! JARVIS is impressed, Sir. The Arc Reactor is fully charged."
+      
+      # Optional: Turn on lights to celebrate
+      - service: light.turn_on
+        target:
+          entity_id: light.living_room
+        data:
+          rgb_color: [255, 215, 0]  # Gold color
+          brightness: 255
+      
+      # Optional: Play a sound
+      - service: media_player.play_media
+        target:
+          entity_id: media_player.living_room_speaker
+        data:
+          media_content_id: "https://www.myinstants.com/media/sounds/jarvis-sir.mp3"
+          media_content_type: "music"
+
+  # Reminder if chores are not done by evening
+  - alias: "Evening Chore Reminder"
+    trigger:
+      - platform: time
+        at: "20:00:00"
+    condition:
+      - condition: template
+        value_template: >
+          {{ state_attr('sensor.daily_chores', 'completed_count') < 
+             state_attr('sensor.daily_chores', 'total_count') }}
+    action:
+      - service: notify.mobile_app
+        data:
+          title: "⚠️ Pending Tasks"
+          message: >
+            Sir, you have {{ state_attr('sensor.daily_chores', 'total_count') - 
+            state_attr('sensor.daily_chores', 'completed_count') }} 
+            tasks remaining today.
+
+# Example script for quick chore management
+script:
+  complete_all_daily_chores:
+    alias: "Mark All Daily Chores Complete"
+    sequence:
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "make_bed"
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "wash_dishes"
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "take_out_trash"
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "wipe_counters"
+      - service: chore_tracker.complete_chore
+        data:
+          chore_id: "feed_pets"
+  
+  reset_all_daily_chores:
+    alias: "Reset All Daily Chores"
+    sequence:
+      - service: chore_tracker.reset_chore
+        data:
+          chore_id: "make_bed"
+      - service: chore_tracker.reset_chore
+        data:
+          chore_id: "wash_dishes"
+      - service: chore_tracker.reset_chore
+        data:
+          chore_id: "take_out_trash"
+      - service: chore_tracker.reset_chore
+        data:
+          chore_id: "wipe_counters"
+      - service: chore_tracker.reset_chore
+        data:
+          chore_id: "feed_pets"

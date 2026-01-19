@@ -1,0 +1,91 @@
+complete_chore:
+  name: Complete Chore
+  description: Mark a chore as completed
+  fields:
+    chore_id:
+      name: Chore ID
+      description: The unique identifier of the chore
+      required: true
+      example: "vacuum_living_room"
+      selector:
+        text:
+
+reset_chore:
+  name: Reset Chore
+  description: Mark a chore as incomplete
+  fields:
+    chore_id:
+      name: Chore ID
+      description: The unique identifier of the chore
+      required: true
+      example: "vacuum_living_room"
+      selector:
+        text:
+
+add_chore:
+  name: Add Chore
+  description: Add a new chore to the tracker
+  fields:
+    chore_id:
+      name: Chore ID
+      description: Unique identifier for the chore
+      required: true
+      example: "vacuum_living_room"
+      selector:
+        text:
+    chore_name:
+      name: Chore Name
+      description: Display name for the chore
+      required: true
+      example: "Vacuum Living Room"
+      selector:
+        text:
+    repeat_interval:
+      name: Repeat Interval
+      description: How often the chore should repeat
+      required: false
+      default: "daily"
+      example: "daily"
+      selector:
+        select:
+          options:
+            - "daily"
+            - "weekly"
+            - "bi_weekly"
+            - "custom"
+    custom_days:
+      name: Custom Days
+      description: Number of days for custom repeat interval
+      required: false
+      example: 3
+      selector:
+        number:
+          min: 1
+          max: 365
+          mode: box
+    trigger_entity:
+      name: Trigger Entity
+      description: Entity to monitor for automatic completion
+      required: false
+      example: "sensor.dishwasher"
+      selector:
+        entity:
+    trigger_state:
+      name: Trigger State
+      description: State that triggers automatic completion
+      required: false
+      example: "clean"
+      selector:
+        text:
+
+remove_chore:
+  name: Remove Chore
+  description: Remove a chore from the tracker
+  fields:
+    chore_id:
+      name: Chore ID
+      description: The unique identifier of the chore to remove
+      required: true
+      example: "vacuum_living_room"
+      selector:
+        text:

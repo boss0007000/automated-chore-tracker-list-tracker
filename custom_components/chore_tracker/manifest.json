@@ -1,0 +1,11 @@
+{
+  "domain": "chore_tracker",
+  "name": "Chore Tracker",
+  "version": "1.0.0",
+  "documentation": "https://github.com/boss0007000/automated-chore-tracker-list-tracker",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@boss0007000"],
+  "config_flow": true,
+  "iot_class": "local_polling"
+}
