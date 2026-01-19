@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chore Tracker Card Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            font-size: 48px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #00D9FF;
+            font-size: 24px;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .info-box h2 {
+            color: #FFD700;
+            margin-top: 0;
+        }
+        
+        .info-box ul {
+            line-height: 1.8;
+        }
+        
+        .info-box code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #00D9FF;
+        }
+        
+        .card-wrapper {
+            min-height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦾 Chore Tracker Demo 🦾</h1>
+        <p class="subtitle">"Sir, your mission objectives are ready for review" - JARVIS</p>
+        
+        <div class="info-box">
+            <h2>✨ Features Showcase</h2>
+            <ul>
+                <li><strong>Arc Reactor Animation:</strong> Pulsing blue glow in the top-right corner</li>
+                <li><strong>Scanning Effects:</strong> Animated scan line moving across the card</li>
+                <li><strong>Progress Tracking:</strong> Real-time animated progress bar with shimmer effect</li>
+                <li><strong>Interactive Chores:</strong> Click items to mark complete/incomplete</li>
+                <li><strong>JARVIS Messages:</strong> Context-aware motivational dialogue</li>
+                <li><strong>Iron Man Theme:</strong> Gold and red color scheme with futuristic styling</li>
+            </ul>
+        </div>
+        
+        <div class="demo-grid">
+            <div class="card-wrapper">
+                <chore-tracker-card id="demo-card-1"></chore-tracker-card>
+            </div>
+            
+            <div class="card-wrapper">
+                <chore-tracker-card id="demo-card-2"></chore-tracker-card>
+            </div>
+            
+            <div class="card-wrapper">
+                <chore-tracker-card id="demo-card-3"></chore-tracker-card>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h2>🎮 Try It Out</h2>
+            <p>Click on any chore item to toggle its completion status and see the animations in action!</p>
+            <p>Watch how:</p>
+            <ul>
+                <li>The progress bar animates smoothly when you complete tasks</li>
+                <li>Completed items get a scanning effect overlay</li>
+                <li>JARVIS provides different motivational messages based on your progress</li>
+                <li>The checkboxes glow when marked complete</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h2>📦 Installation</h2>
+            <p>To use this card in your Home Assistant:</p>
+            <ol>
+                <li>Copy <code>custom_components/chore_tracker</code> to your HA config</li>
+                <li>Copy <code>www/chore-tracker-card.js</code> to your www folder</li>
+                <li>Add the resource in Lovelace</li>
+                <li>Restart Home Assistant</li>
+                <li>Add the card to your dashboard!</li>
+            </ol>
+            <p>See <a href="INSTALLATION.md" style="color: #00D9FF;">INSTALLATION.md</a> for detailed instructions.</p>
+        </div>
+    </div>
+    
+    <script src="chore-tracker-card.js"></script>
+    <script>
+        // Mock Home Assistant environment for demo
+        const mockHass = {
+            states: {
+                'sensor.daily_chores': {
+                    state: '2',
+                    attributes: {
+                        friendly_name: 'Daily Chores',
+                        chores: [
+                            { chore_id: 'make_bed', chore_name: 'Make Bed', completed: true },
+                            { chore_id: 'wash_dishes', chore_name: 'Wash Dishes', completed: true },
+                            { chore_id: 'take_out_trash', chore_name: 'Take Out Trash', completed: false },
+                            { chore_id: 'wipe_counters', chore_name: 'Wipe Kitchen Counters', completed: false },
+                            { chore_id: 'feed_pets', chore_name: 'Feed Pets', completed: false }
+                        ],
+                        completed_count: 2,
+                        total_count: 5,
+                        interval: 'daily'
+                    }
+                },
+                'sensor.weekly_chores': {
+                    state: '1',
+                    attributes: {
+                        friendly_name: 'Weekly Chores',
+                        chores: [
+                            { chore_id: 'clean_bathroom', chore_name: 'Clean Bathroom', completed: false },
+                            { chore_id: 'vacuum_house', chore_name: 'Vacuum Entire House', completed: true },
+                            { chore_id: 'mop_floors', chore_name: 'Mop Floors', completed: false },
+                            { chore_id: 'change_sheets', chore_name: 'Change Bed Sheets', completed: false }
+                        ],
+                        completed_count: 1,
+                        total_count: 4,
+                        interval: 'weekly'
+                    }
+                },
+                'sensor.bi_weekly_chores': {
+                    state: '3',
+                    attributes: {
+                        friendly_name: 'Bi-Weekly Chores',
+                        chores: [
+                            { chore_id: 'deep_clean', chore_name: 'Deep Clean Kitchen', completed: true },
+                            { chore_id: 'clean_windows', chore_name: 'Clean Windows', completed: true },
+                            { chore_id: 'organize', chore_name: 'Organize Closet', completed: true }
+                        ],
+                        completed_count: 3,
+                        total_count: 3,
+                        interval: 'bi-weekly'
+                    }
+                }
+            },
+            callService: function(domain, service, data) {
+                console.log(`Service called: ${domain}.${service}`, data);
+                
+                // Toggle chore completion in demo
+                const entity = this.states['sensor.daily_chores'];
+                if (entity) {
+                    const chore = entity.attributes.chores.find(c => c.chore_id === data.chore_id);
+                    if (chore) {
+                        chore.completed = !chore.completed;
+                        entity.attributes.completed_count = entity.attributes.chores.filter(c => c.completed).length;
+                        entity.state = entity.attributes.completed_count.toString();
+                        
+                        // Refresh all cards
+                        document.querySelectorAll('chore-tracker-card').forEach(card => {
+                            card.render();
+                        });
+                    }
+                }
+            }
+        };
+        
+        // Initialize demo cards
+        setTimeout(() => {
+            const card1 = document.getElementById('demo-card-1');
+            card1.setConfig({ 
+                entity: 'sensor.daily_chores',
+                title: 'Daily Mission Objectives'
+            });
+            card1.hass = mockHass;
+            
+            const card2 = document.getElementById('demo-card-2');
+            card2.setConfig({ 
+                entity: 'sensor.weekly_chores',
+                title: 'Weekly Maintenance Protocol'
+            });
+            card2.hass = mockHass;
+            
+            const card3 = document.getElementById('demo-card-3');
+            card3.setConfig({ 
+                entity: 'sensor.bi_weekly_chores',
+                title: 'Bi-Weekly Systems Check'
+            });
+            card3.hass = mockHass;
+        }, 100);
+    </script>
+</body>
+</html>

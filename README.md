@@ -2,6 +2,10 @@
 
 A futuristic, Iron Man/Tony Stark themed chore and task tracker for Home Assistant with automated triggers, repeating intervals, and motivational UI.
 
+![Chore Tracker Demo](https://github.com/user-attachments/assets/1903f84a-d300-4dd5-baf3-a7e51b09653a)
+
+> *"Sir, your mission objectives are ready for review"* - JARVIS
+
 ## Features
 
 - 🎯 **Manual and Automatic Triggers**: Mark chores complete manually or automatically based on device states
@@ -10,6 +14,16 @@ A futuristic, Iron Man/Tony Stark themed chore and task tracker for Home Assista
 - ✨ **Interactive Animations**: Pulsing effects, scanning lines, and completion celebrations
 - 💪 **Motivational Messages**: Context-aware encouragement from JARVIS to keep you going
 - 📊 **Progress Tracking**: Visual progress bars with real-time completion percentages
+
+## Quick Start
+
+1. **Install the integration** by copying `custom_components/chore_tracker` to your Home Assistant config
+2. **Install the card** by copying `www/chore-tracker-card.js` to your www folder
+3. **Restart Home Assistant** and add the integration via UI
+4. **Add the card** to your dashboard with entity `sensor.daily_chores`
+5. **Start adding chores** using the `chore_tracker.add_chore` service
+
+See [INSTALLATION.md](INSTALLATION.md) for detailed setup instructions.
 
 ## Installation
 
