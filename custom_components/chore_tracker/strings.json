@@ -1,0 +1,17 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Chore Tracker",
+        "description": "Iron Man themed chore tracking with JARVIS motivation"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Chore Tracker Options"
+      }
+    }
+  }
+}
