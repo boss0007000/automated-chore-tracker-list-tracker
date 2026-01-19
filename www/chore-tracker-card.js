@@ -335,8 +335,11 @@ class ChoreTrackerCard extends HTMLElement {
   }
 
   escapeHtml(text) {
+    if (text === null || text === undefined) {
+      return '';
+    }
     const div = document.createElement('div');
-    div.textContent = text;
+    div.textContent = String(text);
     return div.innerHTML;
   }
 

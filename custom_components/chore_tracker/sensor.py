@@ -260,6 +260,8 @@ class ChoreListSensor(SensorEntity):
         self._chores = self._manager.get_chores_by_interval(self._interval)
         
         # Check if any chores need to be reset based on their interval
+        # This runs during sensor updates (typically every 30s by default)
+        # For large chore lists, consider implementing a scheduled task instead
         now = dt_util.now()
         for chore in self._chores:
             next_due = self._manager.calculate_next_due(chore)
