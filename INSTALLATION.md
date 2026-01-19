@@ -1,6 +1,30 @@
 # Installation Guide
 
-## Step 1: Install the Custom Component
+## Installation Methods
+
+Choose one of the following methods to install Chore Tracker:
+
+### Method 1: HACS Installation (Recommended)
+
+1. **Install HACS** if you haven't already: [HACS Installation](https://hacs.xyz/docs/setup/download)
+
+2. **Add Custom Repository**:
+   - In HACS, go to **Integrations**
+   - Click the **three dots** in the top right corner
+   - Select **Custom repositories**
+   - Add `https://github.com/boss0007000/automated-chore-tracker-list-tracker` as repository
+   - Select **Integration** as category
+   - Click **Add**
+
+3. **Install Chore Tracker**:
+   - Search for **Chore Tracker** in HACS
+   - Click on it
+   - Click **Download**
+   - Restart Home Assistant
+
+4. **Continue to Step 2** below to add the integration
+
+### Method 2: Manual Installation
 
 1. **Download or Clone** this repository
 2. **Copy** the `custom_components/chore_tracker` folder to your Home Assistant config directory
